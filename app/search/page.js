@@ -1,12 +1,15 @@
 "use client";
 import FoodCard from "@/components/FoodCard/FoodCard";
 import Search from "@/components/FormElements/Search";
-import Navbar from "@/components/Navbar/Navbar";
 import React from "react";
-import { foodMock } from "@/app/mock";
+import { cartMock, foodMock } from "@/app/mock";
 import { useState } from "react";
+
+import CartIndicator from "@/components/Navbar/Cart/CartIndicator";
 const Page = () => {
   const [search, setSearch] = useState("");
+  const [cartChanged, setCartChanged] = useState(false);
+  const [cartLen, setCartLen] = useState(cartMock.products.length);
   return (
     <div className="w-screen flex flex-col items-center justify-center">
       <div className="h-auto w-full flex flex-col items-center justify-start pt-28 gap-12">
@@ -29,6 +32,8 @@ const Page = () => {
                   shelfLife={item.shelfLife}
                   key={item.id}
                   image={item.image}
+                  setCartChanged={setCartChanged}
+                  setCartLen={setCartLen}
                 />
               ))}
           </div>
@@ -36,6 +41,11 @@ const Page = () => {
           <div>No Items found. Please modify your search</div>
         )}
       </div>
+      {cartChanged ? (
+        <CartIndicator len={cartLen} />
+      ) : (
+        <CartIndicator len={cartLen} />
+      )}
     </div>
   );
 };

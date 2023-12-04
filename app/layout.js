@@ -1,6 +1,5 @@
 import Navbar from "@/components/Navbar/Navbar";
 import "./globals.css";
-
 export const metadata = {
   title: "Seafood Ordering, at your door",
   description: "Order seafood from anywhere in Boston",
