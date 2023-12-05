@@ -4,6 +4,7 @@ import Image from "next/image";
 import Card from "@/components/Navbar/Cart/Card/Card";
 import { cartMock, couponMock } from "@/app/mock";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 const Cart = () => {
   const router = useRouter();
@@ -16,6 +17,19 @@ const Cart = () => {
   const [couponUsed, setCouponUsed] = useState(false);
   const [coupon, setCoupon] = useState({});
   const [couponSearching, setCouponSearching] = useState(false);
+
+  const Alert = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be redirected",
+      icon: "warning",
+      showCancelButton: true,
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Okay",
+    }).then(function () {
+      window.location.href = "/";
+    });
+  };
 
   const handleCoupon = (e) => {
     if (cartAmount == 0 || cartProducts.length == 0 || cartItemsNumber == 0) {
