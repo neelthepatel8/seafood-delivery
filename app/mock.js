@@ -194,6 +194,10 @@ export const cartMock = {
   products: [],
   total_items: 0,
   total_amount: 0,
+  total_amount_with_discount: 0,
+  coupon: {},
+  couponUsed: false,
+  customer_email: "",
 };
 
 export const couponMock = [

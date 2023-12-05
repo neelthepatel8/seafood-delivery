@@ -1,29 +1,16 @@
-"use client";
-import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Swal from "sweetalert2";
-import { cartMock } from "@/app/mock";
 const Card = ({
+  item,
   name,
   price,
   unit,
   image,
   amount,
-  updateCart,
+  handleRemove,
+  handleIncreDecre,
   description,
-  handleCoupon,
 }) => {
-  const [_amount, setAmount] = useState(amount);
-
-  useEffect(() => {
-    cartMock.products = cartMock.products.forEach((i) => {
-      if (i.name == name) {
-        i.amount = _amount;
-      }
-    });
-    updateCart(cartMock);
-  }, [_amount]);
-
   const RemoveAlert = () => {
     Swal.fire({
       title: `Remove ${name}?`,
@@ -37,13 +24,13 @@ const Card = ({
         title: "Success",
         text: `Removed ${name}.`,
         confirmButtonText: "Okay",
-      });
-
-      cartMock.total_amount -= price * _amount;
-      cartMock.total_items -= _amount;
-      cartMock.products = cartMock.products.filter((i) => i.name != name);
-      updateCart(cartMock);
+      }).then(() => handleRemove(item));
     });
+  };
+
+  const decrementWrapper = (e) => {
+    if (amount == 1) RemoveAlert();
+    else handleIncreDecre(item, -1);
   };
   return (
     <div className="w-full h-full flex items-start justify-center">
@@ -58,14 +45,14 @@ const Card = ({
             </div>
             <div className="flex flex-row items-center justify-between gap-6 font-bold text-lg select-none bg-gray-50  drop-shadow-md rounded-xl px-2 py-1">
               <div
-                onClick={() => setAmount((old) => old + 1)}
+                onClick={() => handleIncreDecre(item, 1)}
                 className="cursor-pointer hover:opacity-70"
               >
                 +
               </div>
-              <div className="">{_amount}</div>
+              <div className="">{amount}</div>
               <div
-                onClick={() => (_amount == 0 ? 0 : setAmount((old) => old - 1))}
+                onClick={decrementWrapper}
                 className="cursor-pointer hover:opacity-80  rounded-full select-none"
               >
                 -
@@ -80,7 +67,7 @@ const Card = ({
           </div>
         </div>
         <div className="text-2xl font-medium">
-          $ {(Math.round(_amount * price * 100) / 100).toFixed(2)}
+          $ {(Math.round(amount * price * 100) / 100).toFixed(2)}
         </div>
       </div>
     </div>

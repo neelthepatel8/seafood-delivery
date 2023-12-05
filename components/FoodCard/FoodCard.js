@@ -44,6 +44,8 @@ const FoodCard = ({
     cartMock.total_items = totalItems;
     setCartChanged(true);
     setCartLen(totalItems);
+
+    console.log(cartMock);
   };
   return (
     <div className="flex flex-col items-between justify-center gap-4  w-72 rounded-xl bg-white text-black  overflow-clip drop-shadow-xl">

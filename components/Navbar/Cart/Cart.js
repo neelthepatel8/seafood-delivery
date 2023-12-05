@@ -1,43 +1,76 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Card from "@/components/Navbar/Cart/Card/Card";
 import { cartMock, couponMock } from "@/app/mock";
 import { useRouter } from "next/navigation";
-import Swal from "sweetalert2";
 
 const Cart = () => {
   const router = useRouter();
-  const [cartAmount, sendUpdateCartAmount] = useState(cartMock.total_amount);
-  const [cartProducts, sendUpdateCartProducts] = useState(cartMock.products);
-  const [cartItemsNumber, sendUpdateCartItemsNumber] = useState(
-    cartMock.total_items
-  );
+  const [cart, updateCart] = useState(cartMock);
+
   const [couponCode, setCouponCode] = useState("");
   const [couponUsed, setCouponUsed] = useState(false);
   const [coupon, setCoupon] = useState({});
   const [couponSearching, setCouponSearching] = useState(false);
 
-  const Alert = () => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You will be redirected",
-      icon: "warning",
-      showCancelButton: true,
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Okay",
-    }).then(function () {
-      window.location.href = "/";
+  useEffect(() => {
+    cartMock.products = cart.products;
+    cartMock.total_amount = cart.total_amount;
+    cartMock.total_items = cart.total_items;
+    cartMock.total_amount_with_discount = cart.total_amount_with_discount;
+    cartMock.coupon = cart.coupon;
+    cartMock.couponUsed = cart.couponUsed;
+  }, [cart]);
+
+  const handleRemove = (item) => {
+    const prods = cart.products.filter((prod) => prod.name != item.name);
+    const newTotal = cart.total_amount - item.amount * item.price;
+    const newItemsNumber = cart.total_items - item.amount;
+    updateCart({
+      ...cart,
+
+      total_amount: newTotal,
+      total_amount_with_discount: newTotal,
+
+      total_items: newItemsNumber,
+      products: prods,
+    });
+  };
+
+  const handleIncreDecre = (item, type) => {
+    let newTotal = cart.total_amount;
+    let newItemsNumber = cart.total_items;
+    const prods = cart.products.map((prod) => {
+      if (prod.name === item.name) {
+        prod.amount += type;
+        newTotal += type * prod.price;
+        newItemsNumber += type;
+      }
+      return prod;
+    });
+
+    updateCart({
+      ...cart,
+
+      total_amount: newTotal,
+      total_amount_with_discount: newTotal,
+      total_items: newItemsNumber,
+      products: prods,
     });
   };
 
   const handleCoupon = (e) => {
-    if (cartAmount == 0 || cartProducts.length == 0 || cartItemsNumber == 0) {
+    if (cart.products.length == 0) {
       setCoupon({});
       setCouponUsed(false);
       setCoupon("");
       return;
     }
+
+    setCoupon({});
+    setCouponUsed(false);
+    setCoupon("");
     const foundCoupon = couponMock.filter(
       (coupon) => coupon.code.toLowerCase() == couponCode.toLowerCase()
     );
@@ -56,26 +89,23 @@ const Cart = () => {
             foundCoupon[0].discount
           }%.`,
           discount: foundCoupon[0].discount,
-          applied_amount: (getCartTotal() * foundCoupon[0].discount) / 100,
+          applied_amount: (cart.total_amount * foundCoupon[0].discount) / 100,
         });
 
         setCouponUsed(true);
-        sendUpdateCartAmount(
-          (oldAmt) =>
-            getCartTotal() - (getCartTotal() * foundCoupon[0].discount) / 100
-        );
+
+        const newTotal =
+          cart.total_amount -
+          (cart.total_amount * foundCoupon[0].discount) / 100;
+        updateCart({
+          ...cart,
+          total_amount_with_discount: newTotal,
+          coupon: foundCoupon[0],
+          couponUsed: true,
+        });
+        console.log(cart);
       }
     }, 3000);
-  };
-
-  const getCartTotal = () => {
-    let total = 0;
-
-    cartProducts.forEach((item) => {
-      total += item.price * item.amount;
-    });
-
-    return total;
   };
 
   return (
@@ -85,9 +115,10 @@ const Cart = () => {
           <Image src="/shopping-bag.png" width={35} height={35} alt="" /> Cart
         </div>
         <div className="w-full flex flex-col items-center justify-center gap-5">
-          {cartProducts.length > 0 ? (
-            cartProducts.map((item) => (
+          {cart.products.length > 0 ? (
+            cart.products.map((item) => (
               <Card
+                item={item}
                 name={item.name}
                 description={item.description}
                 price={item.price}
@@ -95,9 +126,8 @@ const Cart = () => {
                 key={item.id}
                 image={item.image}
                 amount={item.amount}
-                sendUpdateCartAmount={sendUpdateCartAmount}
-                sendUpdateCartItemsNumber={sendUpdateCartItemsNumber}
-                sendUpdateCartProducts={sendUpdateCartProducts}
+                handleRemove={handleRemove}
+                handleIncreDecre={handleIncreDecre}
                 handleCoupon={handleCoupon}
               />
             ))
@@ -107,9 +137,11 @@ const Cart = () => {
         </div>
         <div className="w-full border-black border-[0.5px]"></div>
         <div className="w-full flex flex-row items-center justify-between text-3xl font-bold px-20">
-          <div>{cartItemsNumber} items</div>
+          <div>{cart.total_items} items</div>
           <div>
-            <span>${(Math.round(getCartTotal() * 100) / 100).toFixed(2)}</span>
+            <span>
+              ${(Math.round(cart.total_amount * 100) / 100).toFixed(2)}
+            </span>
           </div>
         </div>
         {couponUsed == true && (
@@ -118,13 +150,18 @@ const Cart = () => {
             <div className="text-green-500">
               - ${(Math.round(coupon.applied_amount * 100) / 100).toFixed(2)}
             </div>
-            <div>${(Math.round(cartAmount * 100) / 100).toFixed(2)}</div>
+            <div>
+              $
+              {(
+                Math.round(cart.total_amount_with_discount * 100) / 100
+              ).toFixed(2)}
+            </div>
           </div>
         )}
         <div className="flex flex-col items-start justify-center w-full gap-1 text-sm font-bold">
           <span className="">ENTER PROMO CODE</span>
           <div className="flex flex-row items-center justify-center text-2xl font-light">
-            {cartAmount > 0 ? (
+            {cart.total_amount > 0 ? (
               <>
                 <input
                   className=" h-12  outline-none border-2 bg-gray-100 focus:bg-white px-4"

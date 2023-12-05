@@ -1,37 +1,19 @@
-"use client";
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
-import Card from "@/components/Navbar/Cart/Card/Card";
-import { cartMock, couponMock } from "@/app/mock";
-import { useRouter } from "next/navigation";
+import { cartMock } from "@/app/mock";
+import MinimalCard from "./MinimalCard";
 
 const MinimalCart = () => {
-  const [cartAmount, sendUpdateCartAmount] = useState(cartMock.total_amount);
-  const [cartProducts, sendUpdateCartProducts] = useState(cartMock.products);
-  const [cartItemsNumber, sendUpdateCartItemsNumber] = useState(
-    cartMock.total_items
-  );
-
-  const getCartTotal = () => {
-    let total = 0;
-
-    cartProducts.forEach((item) => {
-      total += item.price * item.amount;
-    });
-
-    return total;
-  };
-
   return (
     <div className="h-full w-full flex items-center justify-center">
-      <div className="h-full w-full  flex flex-col items-start justify-start px-32 py-12 gap-12 ">
+      <div className="h-full w-full  flex flex-col items-start justify-start px-10 py-10 gap-12 ">
         <div className="text-5xl font-extrabold flex flex-row items-center justify-center gap-5">
           <Image src="/shopping-bag.png" width={35} height={35} alt="" /> Cart
         </div>
         <div className="w-full flex flex-col items-center justify-center gap-5">
-          {cartProducts.length > 0 ? (
-            cartProducts.map((item) => (
-              <Card
+          {cartMock.products.length > 0 ? (
+            cartMock.products.map((item) => (
+              <MinimalCard
                 name={item.name}
                 description={item.description}
                 price={item.price}
@@ -39,9 +21,6 @@ const MinimalCart = () => {
                 key={item.id}
                 image={item.image}
                 amount={item.amount}
-                sendUpdateCartAmount={sendUpdateCartAmount}
-                sendUpdateCartItemsNumber={sendUpdateCartItemsNumber}
-                sendUpdateCartProducts={sendUpdateCartProducts}
               />
             ))
           ) : (
@@ -49,12 +28,38 @@ const MinimalCart = () => {
           )}
         </div>
         <div className="w-full border-black border-[0.5px]"></div>
-        <div className="w-full flex flex-row items-center justify-between text-3xl font-bold px-20">
-          <div>{cartItemsNumber} items</div>
+        <div className="w-full flex flex-row items-center justify-between text-3xl font-bold px-7">
+          <div>{cartMock.total_items} items</div>
           <div>
-            <span>
-              ${(Math.round(cartMock.total_amount * 100) / 100).toFixed(2)}
-            </span>
+            {cartMock.couponUsed == true ? (
+              <div className="flex flex-col gap-3 items-end justify-center ml-auto  text-xl font-medium">
+                <span>
+                  Total: $
+                  {(Math.round(cartMock.total_amount * 100) / 100).toFixed(2)}
+                </span>
+                <div>Discount: {cartMock.coupon.discount}%</div>
+                <div className="text-green-500">
+                  - $
+                  {(
+                    Math.round(
+                      ((cartMock.total_amount * cartMock.coupon.discount) /
+                        100) *
+                        100
+                    ) / 100
+                  ).toFixed(2)}
+                </div>
+                <div className="text-3xl font-bold">
+                  Amount Due: $
+                  {(
+                    Math.round(cartMock.total_amount_with_discount * 100) / 100
+                  ).toFixed(2)}
+                </div>
+              </div>
+            ) : (
+              <span>
+                ${(Math.round(cartMock.total_amount * 100) / 100).toFixed(2)}
+              </span>
+            )}
           </div>
         </div>
       </div>
