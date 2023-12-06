@@ -13,6 +13,12 @@ const Navbar = () => {
           onClick={() => router.push("/search")}
           className="text-xl font-semibold cursor-pointer hover:text-red-500 transition-all"
         >
+          Documentation
+        </span>
+        <span
+          onClick={() => router.push("/search")}
+          className="text-xl font-semibold cursor-pointer hover:text-red-500 transition-all"
+        >
           Go to Shop
         </span>
         <span title="My cart">

@@ -1,8 +1,58 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProgressBar from "@ramonak/react-progress-bar";
+import { useSearchParams } from "next/navigation";
+import LoadingOverlay from "@/components/Loading/LoadingOverlay";
 
 const Page = () => {
+  const [delivery, setDelivery] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const params = useSearchParams();
+  const getDelivery = async () => {
+    setLoading(true);
+
+    const response = await fetch(`/api/delivery?order=${params.get("order")}`);
+    const data = await response.json();
+
+    if (data.status == 200) {
+      const delivery_info = data.result[0][0];
+      const response2 = await fetch(
+        `/api/partner?id=${delivery_info.delivery_partner_id}`
+      );
+
+      const data2 = await response2.json();
+
+      if (data2.status == 200) {
+        const partner_info = data2.result[0][0];
+        setTimeout(() => {
+          setLoading(false);
+          setDelivery({ ...delivery_info, ...partner_info });
+        }, 1000);
+      } else {
+        setLoading(false);
+        alert("Something went wrong. Please try again later.");
+      }
+    } else {
+      setLoading(false);
+
+      alert("Something went wrong. Please try again later.");
+    }
+  };
+
+  function formatDateString(isoString) {
+    if (!isoString) return;
+
+    const date = new Date(isoString);
+
+    const options = { day: "numeric", month: "long", weekday: "long" };
+    return new Intl.DateTimeFormat("en-US", options).format(date);
+  }
+
+  useEffect(() => {
+    getDelivery();
+  }, []);
+
   return (
     <div className="flex flex-col items-center justify-start pt-12 gap-12 w-screen h-screen">
       <div className="text-5xl font-bold flex flex-col items-center justify-center gap-5">
@@ -15,33 +65,46 @@ const Page = () => {
         </div>
         <div className="py-4 w-full px-6 bg-teal-400 flex flex-row items-center justify-between">
           <div className="flex flex-col items-center justify-center">
-            <div className="font-bold text-md">SHIPPED VIA</div>
-            <div className="font-light text-2xl">Neel Patel</div>
+            <div className="font-light text-md">SHIPPED VIA</div>
+            <div className="font-medium text-2xl">
+              {delivery.first_name + " " + delivery.last_name}
+            </div>
           </div>
           <div className="flex flex-col items-center justify-center">
-            <div className="font-bold text-md">DRIVER CONTACT</div>
-            <div className="font-light text-2xl">(617) 895-9539</div>
+            <div className="font-light text-md">DRIVER CONTACT</div>
+            <div className="font-medium text-2xl">{delivery.phone}</div>
           </div>
           <div className="flex flex-col items-center justify-center">
-            <div className="font-bold text-md">EXPECTED DELIVERY</div>
-            <div className="font-light text-2xl">12 October</div>
+            <div className="font-light text-md">EXPECTED DELIVERY</div>
+            <div className="font-medium text-2xl">
+              {formatDateString(delivery.expected_delivery_date)}
+            </div>
           </div>
         </div>
         <div className=" border-teal-300 border-4 border-t-0  w-full h-full text-xl flex flex-col items-center justify-center text-black gap-4 p-5">
           <div className="flex flex-row items-center justify-center gap-4">
             <span>Your order status is: </span>
             <span className="bg-blue-500 text-white text-2xl font-bold px-4 py-1 rounded">
-              In Transit
+              {delivery.delivery_status &&
+                delivery.delivery_status[0].toUpperCase() +
+                  delivery.delivery_status.slice(1)}
             </span>
           </div>
           <ProgressBar
             className="w-full"
-            height="40px"
-            completed={20}
+            height="35px"
+            completed={
+              delivery.delivery_status == "placed"
+                ? 20
+                : delivery.delivery_status == "in-transit"
+                ? 55
+                : 95
+            }
             customLabel=" "
           />
         </div>
       </div>
+      {loading && <LoadingOverlay />}
     </div>
   );
 };

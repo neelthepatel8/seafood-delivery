@@ -1,13 +1,8 @@
 "use client";
 import Button from "@/components/Navbar/Button/Button";
-import Navbar from "@/components/Navbar/Navbar";
 import { useRouter } from "next/navigation";
 export default function Home() {
   const router = useRouter();
-
-  const handleLogin = () => {
-    router.push("/login");
-  };
 
   return (
     <div className="font-main w-screen h-screen">
@@ -20,11 +15,14 @@ export default function Home() {
           <div>your door.</div>
         </div>
         <div className="flex flex-col items-center justify-center gap-4">
-          <Button routeTo={"/register"} text="Register today!" />
+          <Button
+            handler={() => router.push("/register")}
+            text="Register today!"
+          />
           <span className=" font-light text-lg ">
             Already a customer?{" "}
             <span
-              onClick={handleLogin}
+              onClick={() => router.push("/login")}
               className="font-medium text-red-600 hover:opacity-60 cursor-pointer"
             >
               Login

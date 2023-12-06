@@ -1,36 +1,153 @@
 "use client";
-import React, { useState } from "react";
-import { paymentMock } from "../mock";
+import React, { useEffect, useState } from "react";
+import { cartMock, paymentMock } from "../mock";
 import Image from "next/image";
 import MinimalCart from "@/components/Navbar/Cart/MinimalCart/MinimalCart";
 import { useRouter } from "next/navigation";
+import LoadingOverlay from "@/components/Loading/LoadingOverlay";
+import Swal from "sweetalert2";
 const Page = () => {
   const router = useRouter();
   const [payment, setPayment] = useState("none");
+  const [methods, setMethods] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    retrievePaymentMethods();
+  }, []);
+
+  const handlePay = async () => {
+    setLoading(true);
+
+    let error = false;
+    const response = await fetch("/api/emailtoid", {
+      method: "POST",
+      headers: {
+        ContentType: "application/json",
+      },
+      body: JSON.stringify({
+        customerEmail: cartMock.customer_email,
+      }),
+    });
+
+    const data = await response.json();
+    if (data.status == 200) {
+      const customerID = data.result[0][0].cid;
+      const response2 = await fetch("/api/create_order", {
+        method: "POST",
+        headers: {
+          ContentType: "application/json",
+        },
+        body: JSON.stringify({
+          customerID: customerID,
+          paymentType: payment,
+          couponCode: cartMock.couponUsed ? cartMock.coupon.code : "",
+        }),
+      });
+
+      const data2 = await response2.json();
+
+      if (data2.status == 200) {
+        const orderID = data2.result[0][0].order_id;
+        const response3 = await fetch("/api/items_to_order", {
+          method: "POST",
+          headers: {
+            ContentType: "application/json",
+          },
+          body: JSON.stringify({
+            orderID: orderID,
+            products: cartMock.products,
+          }),
+        });
+
+        const data3 = await response3.json();
+        if (data3.status == 200) {
+          const response4 = await fetch("/api/remove_from_inventory", {
+            method: "POST",
+            headers: {
+              ContentType: "application/json",
+            },
+            body: JSON.stringify({
+              products: cartMock.products,
+            }),
+          });
+
+          const data4 = await response4.json();
+          if (data4.status == 200) {
+            const response5 = await fetch("/api/deliver", {
+              method: "POST",
+              headers: {
+                ContentType: "application/json",
+              },
+              body: JSON.stringify({
+                orderID: orderID,
+              }),
+            });
+
+            const data5 = await response5.json();
+            console.log(data5);
+            if (data5.status == 200) {
+              setTimeout(() => {
+                setLoading(false);
+                router.push(`/postorder?order=${orderID}`);
+              }, 2000);
+            } else error = true;
+          } else error = true;
+        } else error = true;
+      } else error = true;
+    } else error = true;
+    if (error) {
+      setTimeout(() => {
+        setLoading(false);
+
+        Swal.fire({
+          title: "Error",
+          confirmButtonText: "Okay",
+          text: "Payment Failed! Please try again.",
+          icon: "error",
+        });
+      }, 2000);
+    }
+  };
+
+  const retrievePaymentMethods = async () => {
+    const response = await fetch("/api/payments");
+    const data = await response.json();
+
+    if (response.status == 200) {
+      if (data.status == 200) {
+        const paymentMethods = data.content[0];
+        console.log(paymentMethods);
+        setMethods(paymentMethods);
+      } else {
+        console.log("Error in Sql: ", data.error);
+      }
+    }
+  };
   return (
     <div className="h-screen w-screen flex flex-row items-start justify-center pt-20">
       <div className="w-full flex flex-col items-start justify-start px-40  gap-12">
         <div className="text-7xl font-extrabold">Almost done!</div>
         <div className="h-full w-full flex flex-col items-start justify-center gap-4">
           <div className="text-2xl font-light">Select a Payment Method:</div>
-          <div className="border-2 flex flex-row items-center justify-center gap-5 p-6 rounded">
-            {paymentMock.map((payment) => (
+          <div className=" flex flex-row items-center justify-center gap-5 p-2 rounded">
+            {methods.map((payment) => (
               <div
-                onClick={(e) => setPayment(e.target.innerText)}
-                className={`flex flex-row items-center justify-center gap-2 px-3 py-1 rounded text-xl font-bold cursor-pointer hover:scale-110 transition-all active:scale-95 ${payment.text} ${payment.bg}`}
-                key={payment.type}
+                onClick={(e) => setPayment(payment.payment_type)}
+                className={`flex flex-row items-center justify-center gap-2 px-3 py-1 rounded text-xl font-bold cursor-pointer hover:scale-110 transition-all active:scale-95 ${payment.bg_color} ${payment.payment_text}`}
+                key={payment.payment_type}
               >
                 <Image
-                  src={payment.image}
+                  src={payment.img}
                   width={20}
                   height={20}
-                  alt={payment.type}
+                  alt={payment.payment_type}
                 />
-                {payment.type}
+                {payment.payment_type}
               </div>
             ))}
           </div>
-          <div className="h-full w-1/2">
+          <div className="h-full w-3/4">
             {payment == "Venmo" ? (
               <div>
                 <span className="text-2xl font-thin">
@@ -46,7 +163,7 @@ const Page = () => {
                   />
                 </div>
                 <div
-                  onClick={() => router.push("/postorder")}
+                  onClick={handlePay}
                   className="cursor-pointer hover:scale-110 active:scale-95 transition-all mt-4 flex flex-row items-center justify-center gap-2 bg-sky-500 font-bold text-white text-xl  px-5 py-2 rounded-full"
                 >
                   <Image src="/lock-white.png" width={20} height={20} alt="" />{" "}
@@ -86,7 +203,7 @@ const Page = () => {
                     />
                   </div>
                   <div
-                    onClick={() => router.push("/postorder")}
+                    onClick={handlePay}
                     className="cursor-pointer hover:scale-110 active:scale-95 transition-all mt-4 flex flex-row items-center justify-center gap-2 bg-sky-500 font-bold text-white text-xl  px-5 py-2 rounded-full"
                   >
                     <Image
@@ -119,7 +236,7 @@ const Page = () => {
                     </span>
                   </div>
                   <div
-                    onClick={() => router.push("/postorder")}
+                    onClick={handlePay}
                     className="cursor-pointer hover:scale-110 active:scale-95 transition-all mt-4 flex flex-row items-center justify-center gap-2 bg-sky-500 font-bold text-white text-xl  px-5 py-2 rounded-full"
                   >
                     <Image
@@ -138,7 +255,7 @@ const Page = () => {
                   Connect securely through PayPal Gateway:
                 </span>
                 <div
-                  onClick={() => router.push("/postorder")}
+                  onClick={handlePay}
                   className="cursor-pointer hover:scale-110 active:scale-95 transition-all flex flex-row items-center justify-center gap-4 text-2xl font-bold bg-yellow-400 rounded-full px-5 py-2"
                 >
                   <Image
@@ -159,6 +276,7 @@ const Page = () => {
       <div className="w-full text-3xl font-medium ">
         <MinimalCart />
       </div>
+      {loading && <LoadingOverlay />}
     </div>
   );
 };

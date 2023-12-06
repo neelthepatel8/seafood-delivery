@@ -41,7 +41,7 @@ const Card = ({
             <div className="font-bold text-xl">{name}</div>
             <div className="font-light text-xl">{description}</div>
             <div>
-              {amount} <span className="font-light text-gray-400">{unit}s</span>
+              {amount} <span className="font-light text-gray-400">{unit}</span>
             </div>
             <div className="flex flex-row items-center justify-between gap-6 font-bold text-lg select-none bg-gray-50  drop-shadow-md rounded-xl px-2 py-1">
               <div
