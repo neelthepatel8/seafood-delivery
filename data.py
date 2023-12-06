@@ -74,3 +74,16 @@ def random_zip():
     length = 5
     zipcode = ''.join(str(random.randint(0, 9)) for _ in range(length))
     return zipcode
+
+
+def random_description(product_name):
+    adjectives = ["fresh", "frozen", "delicate", "tasty", "premium",
+                  "wild-caught", "sustainable", "organic", "flavorful", "juicy"]
+    preparations = ["filet", "whole", "sliced", "diced",
+                    "smoked", "grilled", "steamed", "roasted", "fried", "baked"]
+
+    adjective = random.choice(adjectives)
+    preparation = random.choice(preparations)
+
+    description = f"A {adjective} {product_name} {preparation}, perfect for any seafood dish."
+    return description

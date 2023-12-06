@@ -68,7 +68,7 @@ const FoodCard = ({
           </div>
         </div>
         <div>{description}</div>
-        <div className="italic pt-4 font-light">Shelf life: {shelfLife}</div>
+        <div className="italic pt-4 font-light">{shelfLife}</div>
         <div className="mb-0 flex flex-row items-center justify-between pt-2">
           <div className="flex flex-row items-center justify-between gap-6 font-bold text-lg select-none bg-gray-50  drop-shadow-md rounded-xl px-2 py-1">
             <div

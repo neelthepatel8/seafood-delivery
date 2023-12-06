@@ -6,7 +6,9 @@ Python Script to auto generate data into MySQL
 import pymysql
 import random as rand
 import data
+import sys
 
+products = []
 # username = input("Enter your MySQL username: ")
 # password = input("Enter your MySQL password: ")
 
@@ -21,37 +23,36 @@ client = pymysql.connect(
 cursor = client.cursor()
 
 
-def seafood_exists(cursor, seafood_name):
-    query = "SELECT COUNT(*) FROM product WHERE p_name = %s"
-    cursor.execute(query, (seafood_name, ))
-    res = cursor.fetchone()
-    return res[0] > 0
+def seafood_exists(seafood_name):
+    return seafood_name in products
 
 
-def insert_product_row(cursor, p_name, category, sell_price, qty_in_stock, product_img):
+def insert_product_row(cursor, p_name, category, sell_price, qty_in_stock, product_img, p_description):
     query = '''
-            INSERT INTO product(p_name, category, sell_price, qty_in_stock, product_img)
-            VALUES (%s, %s, %s, %s, %s)
+            INSERT INTO product(p_name, category, sell_price, qty_in_stock, product_img, p_description)
+            VALUES (%s, %s, %s, %s, %s, %s)
             '''
 
-    values = (p_name, category, sell_price, qty_in_stock, product_img)
+    values = (p_name, category, sell_price,
+              qty_in_stock, product_img, p_description)
     cursor.execute(query, values)
 
 
 def execute_insert_product_row():
     try:
         random_seafood = data.random_product()
+
+        if seafood_exists(random_seafood):
+            sys.exit()
         categories = ["Frozen", "Fresh", "Non-Refrigerated"]
         random_category = rand.choice(categories)
         random_price = rand.randint(8, 20)
         random_qty = rand.randint(1, 200)
         random_img = f"https://picsum.photos/200/300?random={rand.randint(1, 1000)}"
-
-        while seafood_exists(cursor, random_seafood):
-            random_seafood = data.random_product()
+        random_desc = data.random_description(random_seafood)
 
         insert_product_row(cursor, random_seafood, random_category,
-                           random_price, random_qty, random_img)
+                           random_price, random_qty, random_img, random_desc)
         client.commit()
         print("Success")
     except Exception as error:
@@ -94,7 +95,8 @@ def execute_customer_row():
     execute in whatever range for fresh data... 
     (product will not duplicate if in already)
 '''
-for _ in range(1000):
+for i in range(100):
+    print(f"Inserting: {i}")
     execute_customer_row()
     execute_insert_product_row()
 

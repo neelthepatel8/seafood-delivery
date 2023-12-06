@@ -53,7 +53,7 @@ const Page = () => {
                   price={item["sell_price"]}
                   description={item["p_description"]}
                   unit={"lbs"}
-                  shelfLife={"2 days"}
+                  shelfLife={item["category"]}
                   key={item["pid"]}
                   image={item["product_img"]}
                   setCartChanged={setCartChanged}
