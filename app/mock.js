@@ -213,7 +213,7 @@ export const cartMock = {
     description: "Summer time sale",
   },
   couponUsed: false,
-  customer_email: "patel.neel5@northeastern.edu",
+  customer_email: "zyx@123.com",
 };
 
 export const couponMock = [

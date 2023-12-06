@@ -311,5 +311,5 @@ BEGIN
 END //
 
 DELIMITER ;
-
-select * from delivery_partner;
+call get_partner_info(1);
+select * from delivery;
