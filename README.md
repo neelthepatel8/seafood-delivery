@@ -55,14 +55,14 @@ Libraries & Software Needed: <br>
 
 This application is built on Python, React, Next.JS, and MySQL. This is a full-stack application with many different frameworks and libraries to enable its compatibility. Listed below is all the links to each technology used.
 
-[React Installation Documentation]("https://react.dev/learn/installation")\
-[Python Installation Documentation]("https://www.python.org/downloads/")\
-[Streamlit Installation Documentation]("https://docs.streamlit.io/library/get-started/installation")\
-[MySQL Installation Documentation]("https://dev.mysql.com/doc/mysql-installation-excerpt/5.7/en/")\
-[Next.JS Installation Documentation]("https://nextjs.org/docs/getting-started/installation")\
-[Tailwinds Installation Documentation]("https://tailwindcss.com/docs/installation")\
-[React/Tailwinds Docs]("https://tailwindcss.com/docs/guides/create-react-app")
-[Next.js Documentation]("https://nextjs.org/learn-pages-router/basics/create-nextjs-app")
+[React Installation Documentation](https://react.dev/learn/installation)<br>
+[Python Installation Documentation](https://www.python.org/downloads/)<br>
+[Streamlit Installation Documentation](https://docs.streamlit.io/library/get-started/installation) <br>
+[MySQL Installation Documentation](https://dev.mysql.com/doc/mysql-installation-excerpt/5.7/en/) <br>
+[Next.JS Installation Documentation](https://nextjs.org/docs/getting-started/installation) <br>
+[Tailwinds Installation Documentation](https://tailwindcss.com/docs/installation) <br>
+[React/Tailwinds Docs](https://tailwindcss.com/docs/guides/create-react-app)
+[Next.js Documentation](https://nextjs.org/learn-pages-router/basics/create-nextjs-app)
 
 
 
