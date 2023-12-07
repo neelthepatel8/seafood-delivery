@@ -98,7 +98,7 @@ const Cart = () => {
       else {
         setCoupon({
           message: `${couponCode.toUpperCase()} applied! Discount recieved: ${
-            foundCoupon[0].discount
+            foundCoupon[0].coupon_discount_amt
           }%.`,
           discount: foundCoupon[0].coupon_discount_amt,
           applied_amount:
@@ -114,6 +114,7 @@ const Cart = () => {
           ...cart,
           total_amount_with_discount: newTotal,
           coupon: foundCoupon[0].coupon_code,
+          couponObj: foundCoupon[0],
           couponUsed: true,
         });
       }

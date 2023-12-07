@@ -54,8 +54,9 @@ const Page = () => {
             cartMock.customer_email = "default@email.com";
             router.push("/");
           }}
-          className="text-xl font-bold bg-red-600 text-white hover:scale-110 active:scale-75 cursor-pointer hover:opacity-80 transition-all px-3 py-2 rounded-xl flex items-center justify-center"
+          className="text-xl font-bold bg-red-600 text-white hover:scale-110 active:scale-75 cursor-pointer hover:opacity-80 transition-all px-3 py-2 rounded-xl flex items-center justify-center gap-3"
         >
+          Logout
           <Image src="/logout-white.png" width={25} height={25} alt="logout" />
         </div>
       </div>

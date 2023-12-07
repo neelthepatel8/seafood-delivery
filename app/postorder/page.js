@@ -75,7 +75,7 @@ const Page = () => {
             <div className="font-medium text-2xl">{delivery.phone}</div>
           </div>
           <div className="flex flex-col items-center justify-center">
-            <div className="font-light text-md">EXPECTED DELIVERY</div>
+            <div className="font-light text-ms">EXPECTED DELIVERY</div>
             <div className="font-medium text-2xl">
               {formatDateString(delivery.expected_delivery_date)}
             </div>
@@ -84,11 +84,25 @@ const Page = () => {
         <div className=" border-teal-300 border-4 border-t-0  w-full h-full text-xl flex flex-col items-center justify-center text-black gap-4 p-5">
           <div className="flex flex-row items-center justify-center gap-4">
             <span>Your order status is: </span>
-            <span className="bg-blue-500 text-white text-2xl font-bold px-4 py-1 rounded">
-              {delivery.delivery_status &&
-                delivery.delivery_status[0].toUpperCase() +
-                  delivery.delivery_status.slice(1)}
-            </span>
+            {delivery.delivery_status == "placed" ? (
+              <span className="bg-yellow-500 text-white text-2xl font-bold px-4 py-1 rounded">
+                {delivery.delivery_status &&
+                  delivery.delivery_status[0].toUpperCase() +
+                    delivery.delivery_status.slice(1)}
+              </span>
+            ) : delivery.delivery_status == "in-transit" ? (
+              <span className="bg-orange-500 text-white text-2xl font-bold px-4 py-1 rounded">
+                {delivery.delivery_status &&
+                  delivery.delivery_status[0].toUpperCase() +
+                    delivery.delivery_status.slice(1)}
+              </span>
+            ) : (
+              <span className="bg-green-500 text-white text-2xl font-bold px-4 py-1 rounded">
+                {delivery.delivery_status &&
+                  delivery.delivery_status[0].toUpperCase() +
+                    delivery.delivery_status.slice(1)}
+              </span>
+            )}
           </div>
           <ProgressBar
             className="w-full"

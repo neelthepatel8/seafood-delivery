@@ -37,17 +37,6 @@ const MinimalCart = () => {
                   Total: $
                   {(Math.round(cartMock.total_amount * 100) / 100).toFixed(2)}
                 </span>
-                <div>Discount: {cartMock.coupon.discount}%</div>
-                <div className="text-green-500">
-                  - $
-                  {(
-                    Math.round(
-                      ((cartMock.total_amount * cartMock.coupon.discount) /
-                        100) *
-                        100
-                    ) / 100
-                  ).toFixed(2)}
-                </div>
                 <div className="text-3xl font-bold">
                   Amount Due: $
                   {(

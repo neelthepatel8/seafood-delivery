@@ -198,6 +198,7 @@ export const cartMock = {
   coupon: {},
   couponUsed: false,
   customer_email: "default@email.com",
+  couponObj: {},
 };
 
 export const couponMock = [

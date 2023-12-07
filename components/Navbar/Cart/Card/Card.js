@@ -35,13 +35,13 @@ const Card = ({
     else handleIncreDecre(item, -1);
   };
   return (
-    <div className="w-full h-full flex items-start justify-center">
+    <div className="w-full h-24 flex items-start justify-center">
       <div className="h-full w-full flex flex-row items-center justify-around gap-4">
-        <div className="w-3/4 h-full flex flex-row items-center overflow-clip shadow-lg rounded-lg gap-8">
+        <div className="w-5/6 h-full flex flex-row items-center overflow-clip shadow-lg rounded-lg gap-3">
           <Image src={image} width={80} height={80} alt={image} />
-          <div className="w-full flex flex-row items-center justify-between">
+          <div className="w-full flex flex-row items-center justify-between gap-6">
             <div className="font-bold text-xl">{name}</div>
-            <div className="font-light text-xl">{description}</div>
+            <div className="font-light text-sm">{description}</div>
             <div>
               {amount} <span className="font-light text-gray-400">{unit}</span>
             </div>

@@ -6,6 +6,7 @@ import MinimalCart from "@/components/Navbar/Cart/MinimalCart/MinimalCart";
 import { useRouter } from "next/navigation";
 import LoadingOverlay from "@/components/Loading/LoadingOverlay";
 import Swal from "sweetalert2";
+import Tilt from "react-parallax-tilt";
 const Page = () => {
   const router = useRouter();
   const [payment, setPayment] = useState("none");
@@ -132,7 +133,7 @@ const Page = () => {
   };
   return (
     <div className="h-screen w-screen flex flex-row items-start justify-center pt-20">
-      <div className="w-full flex flex-col items-start justify-start px-40  gap-12">
+      <div className="w-full flex flex-col items-start justify-start px-20  gap-12">
         <div className="text-7xl font-extrabold">Almost done!</div>
         <div className="h-full w-full flex flex-col items-start justify-center gap-4">
           <div className="text-2xl font-light">Select a Payment Method:</div>
@@ -140,7 +141,7 @@ const Page = () => {
             {methods.map((payment) => (
               <div
                 onClick={(e) => setPayment(payment.payment_type)}
-                className={`flex flex-row items-center justify-center gap-2 px-3 py-1 rounded text-xl font-bold cursor-pointer hover:scale-110 transition-all active:scale-95 ${payment.bg_color} ${payment.payment_text}`}
+                className={`flex flex-row items-center justify-center gap-2 px-3 py-1 rounded text-xl font-bold cursor-pointer hover:scale-110 transition-all active:scale-95 bg-yellow-300`}
                 key={payment.payment_type}
               >
                 <Image
@@ -159,14 +160,16 @@ const Page = () => {
                 <span className="text-2xl font-thin">
                   Please send the total amount to the following QR:
                 </span>
-                <div>
-                  <Image
-                    style={{ rotate: 90 }}
-                    src="/venmoqr.png"
-                    width={300}
-                    height={400}
-                    alt="qr"
-                  />
+                <div className="px-4 py-2 drop-shadow-2xl">
+                  <Tilt perspective={7000}>
+                    <Image
+                      style={{ rotate: 90 }}
+                      src="/venmoqr.png"
+                      width={300}
+                      height={400}
+                      alt="qr"
+                    />
+                  </Tilt>
                 </div>
                 <div
                   onClick={handlePay}
