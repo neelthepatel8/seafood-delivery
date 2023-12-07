@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { cartMock } from "@/app/mock";
 const FoodCard = ({
+  id,
   name,
   price,
   description,
@@ -12,6 +13,7 @@ const FoodCard = ({
   image,
   setCartChanged,
   setCartLen,
+  max_qty,
 }) => {
   const [count, setCount] = useState(1);
   const handleAdd = (e) => {
@@ -23,6 +25,7 @@ const FoodCard = ({
       });
     } else {
       cartMock.products.push({
+        id: id,
         name: name,
         price: price,
         description: description,

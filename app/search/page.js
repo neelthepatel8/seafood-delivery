@@ -53,6 +53,8 @@ const Page = () => {
                   )
                   .map((item) => (
                     <FoodCard
+                      max_qty={item["qty_in_stock`"]}
+                      id={item["pid"]}
                       name={item["p_name"]}
                       price={item["sell_price"]}
                       description={item["p_description"]}
