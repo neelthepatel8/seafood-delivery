@@ -50,7 +50,7 @@ const FoodCard = ({
   return (
     <div className="flex flex-col items-between justify-center gap-4  w-72 rounded-xl bg-white text-black  overflow-clip drop-shadow-xl">
       <Image
-        className=" w-72 h-40 object-none"
+        className=" w-72 h-40 object-cover"
         src={image}
         width={200}
         height={100}
