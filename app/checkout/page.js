@@ -30,13 +30,14 @@ const Page = () => {
       }),
     });
 
+    console.log(cartMock);
     const data = await response.json();
     if (data.status == 200) {
       const customerID = data.result[0][0].cid;
       console.log({
         customerID: customerID,
         paymentType: payment,
-        couponCode: cartMock.couponUsed ? cartMock.coupon.code : "",
+        couponCode: cartMock.couponUsed ? cartMock.coupon : "",
       });
       const response2 = await fetch("/api/create_order", {
         method: "POST",
@@ -46,7 +47,7 @@ const Page = () => {
         body: JSON.stringify({
           customerID: customerID,
           paymentType: payment,
-          couponCode: cartMock.couponUsed ? cartMock.coupon.code : "",
+          couponCode: cartMock.couponUsed ? cartMock.coupon : "",
         }),
       });
 

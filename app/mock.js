@@ -191,29 +191,13 @@ export const foodMock = [
 ];
 
 export const cartMock = {
-  products: [
-    {
-      id: 3,
-      name: "Scallop Sashimi",
-      price: 99.99,
-      description: "Premium sturgeon caviar, a luxury delicacy.",
-      unit: "oz",
-      amount: 1,
-      shelfLife: "3 months",
-      image: "https://picsum.photos/1000?random=20",
-    },
-  ],
+  products: [],
   total_items: 0,
   total_amount: 0,
   total_amount_with_discount: 0,
-  coupon: {
-    code: "SUMMER25",
-    discount: 25,
-    expiration: new Date("12/25/2024"),
-    description: "Summer time sale",
-  },
+  coupon: {},
   couponUsed: false,
-  customer_email: "zyx@123.com",
+  customer_email: "default@email.com",
 };
 
 export const couponMock = [

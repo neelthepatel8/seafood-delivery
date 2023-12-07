@@ -1,8 +1,13 @@
 "use client";
 import Button from "@/components/Navbar/Button/Button";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 export default function Home() {
   const router = useRouter();
+
+  useEffect(() => {
+    router.refresh();
+  }, []);
 
   return (
     <div className="font-main w-screen h-screen">
@@ -19,11 +24,11 @@ export default function Home() {
             handler={() => router.push("/register")}
             text="Register today!"
           />
-          <span className=" font-light text-lg ">
+          <span className=" font-light text-xl">
             Already a customer?{" "}
             <span
               onClick={() => router.push("/login")}
-              className="font-medium text-red-600 hover:opacity-60 cursor-pointer"
+              className="font-bold text-red-500 hover:opacity-60 cursor-pointer"
             >
               Login
             </span>

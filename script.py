@@ -91,14 +91,80 @@ def execute_customer_row():
         print(f'Error: {error}')
 
 
+def insert_delivery_partner_row(cursor, first_name, last_name, phone):
+    query = '''
+            INSERT INTO delivery_partner(first_name, last_name, phone)
+            VALUES (%s, %s, %s)
+            '''
+
+    values = (first_name, last_name, phone)
+    cursor.execute(query, values)
+
+
+def execute_insert_delivery_partner():
+    try:
+        first_name = data.random_fname()
+        last_name = data.random_lname()
+        phone = data.random_phone()
+
+        insert_delivery_partner_row(cursor, first_name, last_name, phone)
+        client.commit()
+        print("Success")
+    except Exception as error:
+        client.rollback()
+        print(f'Error: {error}')
+
+
+def get_partner_without_zip(cursor):
+    query = '''SELECT partner_id FROM delivery_partner WHERE partner_id NOT IN(SELECT partner_id FROM delivery_zone)
+    '''
+    cursor.execute(query)
+    no_zip = cursor.fetchall()
+    return no_zip
+
+
+def insert_into_delivery_zone(cursor):
+    partner_with_no_zip = get_partner_without_zip(cursor)
+
+    if not partner_with_no_zip:
+        print("NONE!!")
+        return
+
+    query = '''
+        INSERT INTO delivery_zone(zipcode, partner_id)
+        VALUES(%s, %s)
+        ON DUPLICATE KEY UPDATE zipcode=VALUES(zipcode)
+    '''
+
+    for each in partner_with_no_zip:
+        random_zip = data.random_zip()
+        values = (random_zip, each[0])
+        cursor.execute(query, values)
+
+
+def execute_delivery_zone():
+    try:
+        insert_into_delivery_zone(cursor)
+        client.commit()
+        print("Success")
+    except Exception as error:
+        client.rollback()
+        print(f'Error: {error}')
+
+
 '''
+
     execute in whatever range for fresh data... 
     (product will not duplicate if in already)
 '''
-for i in range(100):
-    print(f"Inserting: {i}")
-    execute_customer_row()
-    execute_insert_product_row()
+# for i in range(100):
+#     print(f"{i}: ", end=" ")
+# execute_customer_row()
+# execute_insert_product_row()
+# execute_insert_delivery_partner()
+# execute_delivery_zone()
+# execute_insert_delivery_partner()
+execute_delivery_zone()
 
 
 cursor.close()

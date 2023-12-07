@@ -70,12 +70,6 @@ def random_state():
     return city
 
 
-def random_zip():
-    length = 5
-    zipcode = ''.join(str(random.randint(0, 9)) for _ in range(length))
-    return zipcode
-
-
 def random_description(product_name):
     adjectives = ["fresh", "frozen", "delicate", "tasty", "premium",
                   "wild-caught", "sustainable", "organic", "flavorful", "juicy"]
@@ -87,3 +81,13 @@ def random_description(product_name):
 
     description = f"A {adjective} {product_name} {preparation}, perfect for any seafood dish."
     return description
+
+
+def random_zip():
+    boston_zipcodes = [
+        "02108", "02109", "02110",
+        "02111", "02112", "02113",
+        "02114", "02115", "02116", "02117"
+    ]
+    zipcode = random.choice(boston_zipcodes)
+    return zipcode

@@ -3,16 +3,16 @@ create database seafood_service_v4;
 use seafood_service_v4;
 
 DROP TABLE IF EXISTS vendor;
-CREATE TABLE vendor ( 
-	vendor_id INT PRIMARY KEY NOT NULL,
+CREATE TABLE vendor (
+    vendor_id INT PRIMARY KEY NOT NULL,
     first_name VARCHAR(64) NOT NULL,
-	last_name VARCHAR(64) NOT NULL,
-	phone_number int NOT NULL,
-	steet_number int NOT NULL,
-	street_name VARCHAR(64) NOT NULL,
-	city VARCHAR(25) NOT NULL,
-	state VARCHAR(2) NOT NULL,
-	zip INT NOT NULL
+    last_name VARCHAR(64) NOT NULL,
+    phone_number INT NOT NULL,
+    steet_number INT NOT NULL,
+    street_name VARCHAR(64) NOT NULL,
+    city VARCHAR(25) NOT NULL,
+    state VARCHAR(2) NOT NULL,
+    zip INT NOT NULL
 );
 
 DROP TABLE IF EXISTS category;

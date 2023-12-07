@@ -99,7 +99,7 @@ BEGIN
         SIGNAL SQLSTATE '45009' SET MESSAGE_TEXT = 'customer id not found';
     ELSE
         IF c_coupon_code = '' THEN
-            SELECT c.coupon_code
+            SELECT *
             FROM coupon c
             WHERE NOT EXISTS (
                 SELECT 1
@@ -405,9 +405,17 @@ BEGIN
 END //
 DELIMITER ;
 
-call insert_payment('Cash', '/lobster.png', 'text-black', 'bg-pink-500'); 
+DROP PROCEDURE IF EXISTS get_all_coupon_codes;
+DELIMITER //
+CREATE PROCEDURE get_all_coupon_codes()
+BEGIN
+    select * from coupon;
+END //
+DELIMITER ;
 
-select * from payment;
+
+
+    
 
 
 

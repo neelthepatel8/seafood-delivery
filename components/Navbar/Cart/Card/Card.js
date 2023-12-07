@@ -19,12 +19,14 @@ const Card = ({
       showCancelButton: true,
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes",
-    }).then(function () {
-      Swal.fire({
-        title: "Success",
-        text: `Removed ${name}.`,
-        confirmButtonText: "Okay",
-      }).then(() => handleRemove(item));
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Success",
+          text: `Removed ${name}.`,
+          confirmButtonText: "Okay",
+        }).then(() => handleRemove(item));
+      }
     });
   };
 

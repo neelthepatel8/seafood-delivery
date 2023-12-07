@@ -12,9 +12,13 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
-    const response = await fetch(
-      `/api/login?email=${email}&password=${password}`
-    );
+    const response = await fetch(`/api/login`, {
+      method: "POST",
+      headers: {
+        ContentType: "application/json",
+      },
+      body: JSON.stringify({ email: email, password: password }),
+    });
 
     const data = await response.json();
     console.log(data);

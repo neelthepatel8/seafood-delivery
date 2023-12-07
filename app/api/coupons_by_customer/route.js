@@ -2,14 +2,13 @@ import connectMYSQL from "@/db/db";
 
 export async function POST(req) {
   const input = await req.json();
-
   const resp = { status: 500 };
   const dbconn = connectMYSQL();
 
   try {
     const result = await new Promise((resolve, reject) => {
       dbconn.query(
-        `CALL user_login('${input.email}', '${input.password}');`,
+        `CALL get_promo_codes(${input.customerID}, '');`,
         (error, result) => {
           if (error) {
             reject(error);
@@ -20,10 +19,11 @@ export async function POST(req) {
       );
     });
 
-    console.log(result);
+    console.log("RESULT: ", result);
     resp.status = 200;
+    resp.result = result;
   } catch (error) {
-    console.log(error);
+    console.log("ERROR: ", error);
     resp.status = 400;
   }
 
