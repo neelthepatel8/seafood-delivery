@@ -48,9 +48,9 @@ const FoodCard = ({
     console.log(cartMock);
   };
   return (
-    <div className="flex flex-col items-between justify-center gap-4  w-72 rounded-xl bg-white text-black  overflow-clip drop-shadow-xl">
+    <div className=" flex flex-col items-between justify-center gap-4  w-72 rounded-xl bg-white text-black  overflow-clip drop-shadow-xl">
       <Image
-        className=" w-72 h-40 object-cover"
+        className=" w-72 h-40 object-cover "
         src={image}
         width={200}
         height={100}

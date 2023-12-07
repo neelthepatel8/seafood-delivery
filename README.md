@@ -5,9 +5,15 @@ How to setup (locally): <br>
 ```MD
 1. Unzip the file
 2. Open the terminal inside the files root folder
-3. run "npm install"
-4. run "pip install -r requirements.txt"
-5. run "npm run dev"
+3. Make a new file named .env.local and put the following code inside it:
+    DB_HOST="db-mysql-nyc1-26951-do-user-14685697-0.c.db.ondigitalocean.com"
+    DB_PORT=25060
+    DB_USER="doadmin"
+    DB_PASSWORD="AVNS_ZxAXLPDXSco1qchGFKp"
+    DB_NAME="seafood_service_v4"
+3. Run "npm install"
+4. Run "pip install -r requirements.txt"
+5. Run "npm run dev"
 6. Navigate to "https://localhost3000" or your specified localhost
 7. Or bypass these instructions and access the application in the browser with the link below
 ```
