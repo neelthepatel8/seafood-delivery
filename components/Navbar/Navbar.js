@@ -12,7 +12,9 @@ const Navbar = () => {
       <Logo />
       <div className="h-full w-full flex flex-row items-center justify-end gap-8">
         <span
-          onClick={() => router.push("/documentation")}
+          onClick={() =>
+            router.push("https://github.com/neelthepatel8/seafood-delivery")
+          }
           className="text-xl font-semibold cursor-pointer hover:text-red-500 transition-all"
         >
           Documentation
