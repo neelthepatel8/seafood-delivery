@@ -142,8 +142,8 @@ To navigate through the admin portal and manage the database, the user first log
 If successfully verified, the user can then see the coresponding content. To give an overview of the functionality for each role:
 
 - admin staff: can view all tables, can insert/delete/update from most tables. The view-only tables are tables with customer related information, and those can be modified through the customer site frond end.
-- delivery staff: can only view the "delivery" table (joined with the customer table to include delivery address); can edit the "delivery_status" field.
-- non-admin staff: can view all tables, cannot modify any. The user of this role could be marketing staff, accouting staff, etc. The portal has a data analysis & visualization component that could be particularly useful for these staffs.
+- delivery staff: can only view the "delivery" table plus address info joined from "customer" table; can edit "expected_delivery_date" and "delivery_status".
+- non-admin staff: marketing staff, accouting staff, etc. Can view data analysis & visualization, cannot edit.
 
 A complete view of user activities:
 < insert flow chart>
