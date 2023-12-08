@@ -89,7 +89,7 @@ If you want to re-build on your computer and run on localhost instead:
 6.  A webpage should pop up in your browser
 7.  if not, navigate to "http://localhost:8501" in your browser
 8.  To stop running the app, from the same terminal, hit `Control` + `C`
-9.  Note that your localhost is still connecting to our remote hosted db instead of your local db from our dump file
+9.  Note that your localhost is still connecting to our remote hosted db instead of your local db from our dump file. If you need to connect to the local db from dump, replace info in step 4 with your local credentials.
 
 Libraries & Software Needed: <br>
 No installation needed for accessing our deployed sites. For building and running locally:
