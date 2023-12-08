@@ -70,14 +70,26 @@ To access the deployed portal:
 OR  
 If you want to re-build on your computer and run on localhost instead:
 
-1. Pre: Python 3.8 - Python 3.12, PIP
-2. Have both files [isf_config.py], [isf_dbapp.py] in the same directory
-3. In CLI, navigate into that directory, run `pip install pymysql pandas streamlit` if not already installed
-4. In CLI, in the same directory, run `streamlit run isf_dbapp.py`
-5. A webpage should pop up in your browser
-6. if not, navigate to "http://localhost:8501" in your browser
-7. To stop running the app, from the same terminal, hit `Control` + `C`
-8. Note that your localhost is still connecting to our remote hosted db instead of your local db from our dump file
+1.  Pre: Python 3.8 - Python 3.12, PIP
+2.  Have both files [isf_config.py], [isf_dbapp.py] in the same directory
+3.  In CLI, navigate into that directory, run `pip install pymysql pandas streamlit` if not already installed
+4.  Under the same directory, make a new file ".streamlit/secrets.toml" and write the following to it:
+
+        DB_HOST="db-mysql-nyc1-26951-do-user-14685697-0.c.db.ondigitalocean.com"
+        DB_PORT=25060
+        DB_USER="doadmin"
+        DB_PASSWORD="AVNS_ZxAXLPDXSco1qchGFKp"
+        DB_NAME="seafood_service_v4"
+
+        admin="adminpwd"
+        delivery="deliverypwd"
+        non-admin="nonadminpwd"
+
+5.  In your terminal, under the same directory, run `streamlit run isf_dbapp.py`
+6.  A webpage should pop up in your browser
+7.  if not, navigate to "http://localhost:8501" in your browser
+8.  To stop running the app, from the same terminal, hit `Control` + `C`
+9.  Note that your localhost is still connecting to our remote hosted db instead of your local db from our dump file
 
 Libraries & Software Needed: <br>
 No installation needed for accessing our deployed sites. For building and running locally:
@@ -113,6 +125,7 @@ This application is built on Python, React, Next.JS, and MySQL. This is a full-s
 
 ## User Flow
 
+**Customer Site**
 Commands the user uses: <br>
 
 1. register_user
@@ -123,6 +136,17 @@ Commands the user uses: <br>
 6. remove_item_from_inventory
 7. get_payment_methods
 8. get_all_inventory
+
+**Admin Portal**  
+To navigate through the admin portal and manage the database, the user first login with a role and its credential.
+If successfully verified, the user can then see the coresponding content. To give an overview of the functionality for each role:
+
+- admin staff: can view all tables, can insert/delete/update from most tables. The view-only tables are tables with customer related information, and those can be modified through the customer site frond end.
+- delivery staff: can only view the "delivery" table (joined with the customer table to include delivery address); can edit the "delivery_status" field.
+- non-admin staff: can view all tables, cannot modify any. The user of this role could be marketing staff, accouting staff, etc. The portal has a data analysis & visualization component that could be particularly useful for these staffs.
+
+A complete view of user activities:
+< insert flow chart>
 
 ## Lessons Learned
 
