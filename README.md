@@ -49,7 +49,7 @@ Running as User:
 7. You should now see your order tracking page with your delivery details
 ```
 
-Running as Admin (June to complete streamlit side):
+Running as Admin:
 
 ```
 1. login with:
