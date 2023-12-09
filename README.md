@@ -59,7 +59,7 @@ Running as Admin:
 ```
 
 **Admin Portal**  
-The admin portal is deployed on [Streamlit Community Cloud], and connected to our remote hosted databse. Through the portal's landing page, select a role to see the corresponding contents. Hover over the tooltip on top of the password box to see the password for each.
+The admin portal is deployed on [Streamlit Community Cloud], and connected to our remote hosted databse. Through the portal's landing page, select a role to see the corresponding contents.
 
 To access the deployed portal:
 
@@ -152,10 +152,15 @@ A complete view of user activities:
 
 1. Through developing this application, we as a team learned many valuable skills. First we built a full-stack application, and this project helped us paint the picture how a database handles requests to and from it. We saw how a user can go from signing up on our platform, and go through a shopping experience, and have all of this data reflected in the database. We learned how to interact with MySQL and write a functioning database, encompassed with many procedures that simplified the backend process. We learned how to stand-up and deploy a front-end that is capable of handling requests from the user and fetch these from the backend and make the reflected changes. Our tech stack was wide, and we got to dip our toes into some new languages. <br>
 
-2. Some insight we gained as a team was <br>
+2. Some insight we gained as a team was:
+
+- A good conceptual design is essential to building a working database application; fix that before starting any development work.
+- Ensuring duribility is not an easy task when there is a front end user; modification submitted by the user can fail in many unexpected ways and it is important to properly indicate the user.
+  <br>
 
 3. From our initial proposal through to our final draft, we had made many revisions of our project. What we thought would work at the start ended up not being ideal, and so we made changes to our project. Please refer to our user flow diagram to see our final state. Essentially, we built two portals. One for the user experience, and one for the admin perspective. Both sides of the house guarantee functional CRUD operations for different scenarios. For example, on the user side, a user is able to register an account, and perform some shopping activity. The user has their own account, and their own shopping cart. The user also has coupon codes. When the user checksout, our database is updated to reflect these changes (i.e. items and their quantity are removed from the shop, and the users coupon has been applied). <br>
-   From the admin side of the house, we have functioning CRUD operations such that the admin has the power to add, or remove users from the database. The admin has the ability to add, or remove new rows, or columns to various tables such as the product they are selling, or the delivery_partners that they work with.<br> 4. All code is working.
+   From the admin side of the house, we have functioning CRUD operations such that the admin has the power to add, or remove users from the database. The admin has the ability to add, or remove new rows, or columns to various tables such as the product they are selling, or the delivery_partners that they work with.<br>
+4. All code is working.
 
 ## Future Work
 
